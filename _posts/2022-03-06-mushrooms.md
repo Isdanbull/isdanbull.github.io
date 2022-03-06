@@ -4,6 +4,9 @@ Welcome to my very first blog post. I hope you are as excited as I am? If not, I
 
 So let's get started! 
 
+1. TOC
+{:toc}
+
 ## The data
 
 For this project we will be working with the Mushroom Classification dataset from Kaggle ([link](https://www.kaggle.com/uciml/mushroom-classification)). First things first, let's 
