@@ -1,6 +1,6 @@
 # Down a rabbit hole in search of mushrooms
 
-Welcome to my very first blog post. I hope you are as excited as I am? If not, I'm sure a little exploration of mushrooms should fix that!
+Welcome to my very first blog post. I hope you are as excited as I am? If not, I'm sure a little exploration of mushrooms will fix that!
 
 So let's get started! 
 
@@ -536,11 +536,7 @@ Our function has three exit clauses:
 feature_eliminator(data, 'class', pipe, min_prob=0.95)
 ```
 
-    Only one feature needed to achieve 95.0% accuracy. Accuracy:98.5%, recall:96.89999999999999%
-    
-
-
-
+    Only one feature needed to achieve 95.0% accuracy. Accuracy:98.5%, recall:96.9%
 
     ['odor']
 
@@ -554,10 +550,6 @@ feature_eliminator(data, 'class', pipe, min_prob=0.95, initial_drops=['odor'])
 ```
 
     Minimum # of features with at least 95.0% accuracy: 2, accuracy:97.2%, recall:99.1%
-    
-
-
-
 
     ['gill_size', 'spore_print_color']
 
@@ -570,11 +562,7 @@ Well... one more try with all three removed?
 feature_eliminator(data, 'class', pipe, min_prob=0.95, initial_drops=['odor', 'gill_size', 'spore_print_color'])
 ```
 
-    Minimum # of features with at least 95.0% accuracy: 3, accuracy:95.89999999999999%, recall:93.89999999999999%
-    
-
-
-
+    Minimum # of features with at least 95.0% accuracy: 3, accuracy:95.9%, recall:93.9%
 
     ['ring_type', 'population', 'habitat']
 
