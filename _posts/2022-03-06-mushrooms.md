@@ -494,7 +494,7 @@ plt.show()
 As we suspected during the EDA odor is a very powerful feature. Looking back at spore_print_color it's also not suprising that the model has honed in on it. veil_color on the other hand is
 suprisingly irrelivant. 
 
-We can see from the plot that there are definitly some features (veil_type chief among them) that we could probably do without. Lets see what we can get away with losing. We will build a function
+We can see from the plot that there are some features (veil_type chief among them) that we could probably do without. Lets see what we can get away with losing. We will build a function
 that runs a model, removes the least important feature and runs the model again, continuing until it has reached some lower level of efficiancy.
 
 
@@ -577,13 +577,13 @@ That's enough of that I think! There are obviously a multitude of very strong pr
 
 Okay, let's set out a project. We shall build a usable field guide that is fully accessable. For this we will need:
 
-- A model that has no risk of poisoning its users; that is 100% recall.
+- A model that has no risk of poisoning its users; that is, 100% recall.
 - The model should not use any features that might be inaccessable; in this case that means colors and odor.
 - The model should be as simple as possible.
 
 Our model will be a Decision Tree; we shall try to minimise the number of end leaves. We will use a GridsearchCV ensemble to try to find the best parameters and try different random seeds.
 
-Our first step will be to build a function runs our GridSearchCV with increasing Maximum leaf values searching for one that achieves 100% recall. It will then produce the best decision tree it found and 
+Our first step will be to build a function runs our GridSearchCV with increasing Maximum leaf values, searching for one that achieves 100% recall. It will then produce the best decision tree it found and 
 report its accuracy.
 
 
@@ -595,7 +595,6 @@ def leaf_finder(df, target, features, params, recall_limit=1.0, min_leaf=2, max_
     y = data[target]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    
     encoder = OrdinalEncoder()
     tree = DecisionTreeClassifier()
     for i in range(min_leaf,max_leaf+1):
@@ -618,15 +617,15 @@ def leaf_finder(df, target, features, params, recall_limit=1.0, min_leaf=2, max_
 ```
 
 Eagle eyed readers may have noticed something a bit naughty about our function: We are predicting upon the entire dataset rather then just the training set. There is a reason for this; As we are looking for 100%
-recall we are protected from overfitting - if the algorithm is achieving 100% on the whole data set it must necessarily be achieving it on the training set as well. Why doing it this way is desirable is because it is
-possible for an algorithm to achieve high but not 100% recall on the training data but then, by fluke, get 100% on the test data. This protects us from that case.
+recall we are protected from overfitting - if the algorithm is achieving 100% on the whole dataset it must necessarily be achieving it on the training set as well. This method is desirable because it is
+possible for an algorithm to achieve high but not quite 100% recall on the training data and then, by fluke, get 100% on the test data. This protects us from that case.
 
 Now, lets impliment it.
 
 
 ```python
 features = list(data.columns)
-for i in ['odor', 'spore_print_color', 'veil_color', 'stalk_color_below_ring', 'stalk_color_above_ring', 'gill_color', 'cap_color', 'class']:#
+for i in ['odor', 'spore_print_color', 'veil_color', 'stalk_color_below_ring', 'stalk_color_above_ring', 'gill_color', 'cap_color', 'class']:
     features.remove(i)
 
 params = {'criterion':['entropy', 'gini'],
@@ -643,25 +642,11 @@ best = leaf_finder(data, 'class', features, params, min_leaf=5, max_leaf=15)
 8 leaves, not bad! An overall accuracy of 96.5% is completly acceptable as well. Lets take a look at the winning tree:
 
 
-```python
-from sklearn.tree import plot_tree
-
-plt.figure(figsize=(20,20))
-plot_tree(best, feature_names=features, class_names=['edible', 'poisonous'], filled=True)
-plt.show()
-```
 
 
 ![](/images/output_37_0.png)   
 
     
-
-
-
-```python
-#hide
-data['stalk_root'] = data['stalk_root'].map({'bulbous': 1, 'club': 0, 'equal': 3, 'missing': 2, 'rooted': 4})
-```
 
 Can we make it any better? After a bit of experimentation I found two stratagies. Firstly gill_size seems to be a trap. While it is a great initial seporator the two groups it creats seem to be hard
 to brake down further. Secondly the stalk root feature is obviously a very useful one, but the arbitraty order it has been assigned seems sub-optimal (as we can see from the fact it has been split on three
@@ -684,15 +669,6 @@ best = leaf_finder(data, 'class', features, params, min_leaf=5, max_leaf=15)
 
     Best estimator achieved accuracy of 93.5%, using 6 leaves
     
-
-
-```python
-from sklearn.tree import plot_tree
-
-plt.figure(figsize=(10,10))
-plot_tree(best, feature_names=features, class_names=['edible', 'poisonous'], filled=True)
-plt.show()
-```
 
 
     
