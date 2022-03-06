@@ -32,20 +32,7 @@ data.describe(include='all')
 
 
 
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -203,74 +190,7 @@ data.shape
 Yep, looking good. Our next step is to figure out what all of these letters mean - fortunetly kaggle provides a data dictionary. Let's use it to map the letters to their meanings and run the describe again:
 
 
-```python
-#hide
-#credit the Awesome Neil Molky
-mush_keys = {}
-laziness = """class: edible=e, poisonous=p
-cap-shape: bell=b,conical=c,convex=x,flat=f, knobbed=k,sunken=s
-cap-surface: fibrous=f,grooves=g,scaly=y,smooth=s
-cap-color: brown=n,buff=b,cinnamon=c,gray=g,green=r,pink=p,purple=u,red=e,white=w,yellow=y
-bruises: yes=t,no=f
-odor: almond=a,anise=l,creosote=c,fishy=y,foul=f,musty=m,none=n,pungent=p,spicy=s
-gill-attachment: attached=a,descending=d,free=f,notched=n
-gill-spacing: close=c,crowded=w,distant=d
-gill-size: broad=b,narrow=n
-gill-color: black=k,brown=n,buff=b,chocolate=h,gray=g, green=r,orange=o,pink=p,purple=u,red=e,white=w,yellow=y
-stalk-shape: enlarging=e,tapering=t
-stalk-root: bulbous=b,club=c,cup=u,equal=e,rhizomorphs=z,rooted=r,missing=?
-stalk-surface-above-ring: fibrous=f,scaly=y,silky=k,smooth=s
-stalk-surface-below-ring: fibrous=f,scaly=y,silky=k,smooth=s
-stalk-color-above-ring: brown=n,buff=b,cinnamon=c,gray=g,orange=o,pink=p,red=e,white=w,yellow=y
-stalk-color-below-ring: brown=n,buff=b,cinnamon=c,gray=g,orange=o,pink=p,red=e,white=w,yellow=y
-veil-type: partial=p,universal=u
-veil-color: brown=n,orange=o,white=w,yellow=y
-ring-number: none=n,one=o,two=t
-ring-type: cobwebby=c,evanescent=e,flaring=f,large=l,none=n,pendant=p,sheathing=s,zone=z
-spore-print-color: black=k,brown=n,buff=b,chocolate=h,green=r,orange=o,purple=u,white=w,yellow=y
-population: abundant=a,clustered=c,numerous=n,scattered=s,several=v,solitary=y
-habitat: grasses=g,leaves=l,meadows=m,paths=p,urban=u,waste=w,woods=d"""
-laziness = laziness.split("\n")
-for l in laziness:
-    col_list = l.split(":")[1]
-    col_list = col_list.split(",")
-    col_dict = {}
-    for col in col_list:
-        dict_hack = col.split("=")
-        col_dict[dict_hack[1]] = dict_hack[0].strip()
-    mush_keys[l.split(":")[0]] = col_dict
 
-data.replace(mush_keys, inplace=True)
-
-renamer = {}
-for col in data.columns: 
-    renamer[col] = col.replace('-','_')
-data.rename(renamer, axis='columns', inplace=True)
-```
-
-
-```python
-#hide
-data.describe()
-```
-
-
-
-
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -411,12 +331,12 @@ data.describe()
 
 
 
-Much better! Most of the columns seem pretty self explanitory. The exception is the class column which turns out to have two unique values: 'edible' and 'poisonous'. Well as budding (or in this case sporing??) data scientists our next step
+Much better! Most of the columns seem pretty self explanitory. The exception is the class column which turns out to have two unique values: 'edible' and 'poisonous'. Well, as budding (or in this case sporing??) data scientists our next step
 seems obvious - let's see how well we can classify mushrooms as poisonous or edible!
 
 ## EDA
 
-Well, let's take a look at how our data looks when broken down by class:
+Let's take a look at how our data looks when broken down by class:
 
 
 
@@ -457,11 +377,6 @@ To begin with lets try out a random forest. It will be easy to fit and should gi
 use it to make some predictions and then evaluate them. Our key metric here will be recall i.e. the proportion of poisonous mushrooms we correctly identify (I can live with not eating an edible mushroom. Eating a poisonous one on the
 otherhand... well let's not find out!)
 
-
-```python
-#hide
-data['class'] = data['class'].map({'poisonous':1, 'edible':0})
-```
 
 
 ```python
@@ -545,8 +460,7 @@ plt.show()
 
 
     
-![png](output_22_0.png)
-    
+![](/images/output_22_0.png)    
 
 
 As we suspected during the EDA odor is a very powerful feature. Looking back at spore_print_color it's also not suprising that the model has honed in on it. veil_color on the other hand is
@@ -722,8 +636,8 @@ plt.show()
 ```
 
 
-    
-![png](output_37_0.png)
+![](/images/output_37_0.png)   
+
     
 
 
@@ -766,8 +680,8 @@ plt.show()
 
 
     
-![png](output_41_0.png)
-    
+
+![](/images/output_41_0.png)    
 
 
 And there we have it! Five questions that anyone can answer and we have sucessfully sorted out all of the inedible fungus. Trufflers rejoyce!
