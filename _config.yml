@@ -6,8 +6,9 @@
 # https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
 # https://learnxinyminutes.com/docs/yaml/
 
-title: lets learn bloh
-description: testing testing testing 1,2,3 WHO LIKES MUSHROOMS!>!>
+title: Machine learnings
+description: In this blog I'll be presenting some of my work as a new data scientist. Primarily this is to help me digest but hopefully it will provide some 
+use or interest to you, dear reader.
 github_username: isdanbull
 
 # Email and twitter are optional:
