@@ -189,7 +189,7 @@ data.describe(include='all')
 
 
 
-From the looks of things we are dealing with 8124 observations, each containing various catagorical data. It dosn't look like we have any missing data but let's check to be sure:
+From the looks of things we are dealing with 8124 observations, each containing various categorical data. It doesn't look like we have any missing data but let's check to be sure:
 
 
 ```python
@@ -203,7 +203,7 @@ data.shape
 
 
 
-Yep, looking good. Our next step is to figure out what all of these letters mean - fortunetly kaggle provides a data dictionary. Let's use it to map the letters to their meanings and run the describe again:
+Yep, looking good. Our next step is to figure out what all of these letters mean - fortunately kaggle provides a data dictionary. Let's use it to map the letters to their meanings and run the describe again:
 
 <div>
 <style scoped>
@@ -359,7 +359,7 @@ Yep, looking good. Our next step is to figure out what all of these letters mean
 
 
 
-Much better! Most of the columns seem pretty self explanitory. The exception is the class column which turns out to have two unique values: 'edible' and 'poisonous'. Well, as budding (or in this case sporing??) data scientists our next step
+Much better! Most of the columns seem pretty self explanatory. The exception is the class column which turns out to have two unique values: 'edible' and 'poisonous'. Well, as budding (or in this case sporing??) data scientists our next step
 seems obvious - let's see how well we can classify mushrooms as poisonous or edible!
 
 ## EDA
@@ -399,11 +399,11 @@ That's... a little overwhelming but we can certainly make out some interesting p
 
 We could investigate some of these relationships further but I get the strong feeling that several of these features are going to do a very good job of predicting so; let's take a look!
 
-## If a mushroom falls in a random forest and noones there to see...
+## If a mushroom falls in a random forest with no-body there to see...
 
-To begin with lets try out a random forest. It will be easy to fit and should give us an idea of how challenging our task will be. We will split our data into a training as a test set, fit a very basic Random Forest Classifier (RFC) 
+To begin with, let's try out a random forest. It will be easy to fit and should give us an idea of how challenging our task will be. We will split our data into a training as a test set, fit a very basic Random Forest Classifier (RFC) 
 use it to make some predictions and then evaluate them. Our key metric here will be recall i.e. the proportion of poisonous mushrooms we correctly identify (I can live with not eating an edible mushroom. Eating a poisonous one on the
-otherhand... well let's not find out!)
+other hand... well let's not find out!)
 
 
 
@@ -415,11 +415,11 @@ y = data['class']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 ```
 
-One of the advantages of RFC's is that we can be very laissez faire about what we feed them. Unlike some of the more statistical ML algorithms RFC's just wont use anything problematic so, besides stripping out our target variable we will
+One of the advantages of RFC's is that we can be very laissez faire about what we feed them. Unlike some of the more statistical ML algorithms RFC's just won't use anything problematic so, besides stripping out our target variable we will
 give the model our data as is. The one thing we will need to do is encode our data numerically but unlike many other algorithms, RFC's don't need it to be One Hot Encoded so we shall use an Ordinal Encoder, arbitrarily assigning each
 unique category to an integer for each feature. In the background I have manually assigned class in order to ensure poisonous is given the value of 1.
 
-It's probably overkill for such a simple opporation but I am going to use an SKlearn pipeline for funsies.
+It's probably overkill for such a simple opperation but I am going to use an SKlearn pipeline for funsies.
 
 
 ```python
@@ -447,7 +447,7 @@ pipe.fit(X_train, y_train)
 
 
 
-Now that we have fitted our model to the training set we can apply it to the unseen test set and then do some evaluation. Lets look at the Recall and overall Accuracy.
+Now that we have fitted our model to the training set we can apply it to the unseen test set and then do some evaluation. Let's look at the Recall and overall Accuracy.
 
 
 ```python
@@ -462,13 +462,13 @@ print(f'Our first model achieved an accuracy of {accuracy} and a recall of {reca
     Our first model achieved an accuracy of 1.0 and a recall of 1.0
     
 
-... Well that went better then expected. Let's come up with a new plan!
+... Well that went better than expected. Let's come up with a new plan!
 
 ## Less is more
 
-Now that we know that mushrooms are very predictible (sorry Mycologiests, looks like the machines are here for your jobs) we shall have to find something a little bit more challenging. 
+Now that we know that mushrooms are very predictable (sorry Mycologists, looks like the machines are here for your jobs) we shall have to find something a little bit more challenging. 
 
-Lets take a look at what our model was using.
+Let's take a look at what our model was using.
 
 
 ```python
@@ -491,11 +491,11 @@ plt.show()
 ![](/images/output_22_0.png)    
 
 
-As we suspected during the EDA odor is a very powerful feature. Looking back at spore_print_color it's also not suprising that the model has honed in on it. veil_color on the other hand is
-suprisingly irrelivant. 
+As we suspected during the EDA odor is a very powerful feature. Looking back at spore_print_color it's also not surprising that the model has honed in on it. veil_color on the other hand is
+surprisingly irrelevant. 
 
 We can see from the plot that there are some features (veil_type chief among them) that we could probably do without. Lets see what we can get away with losing. We will build a function
-that runs a model, removes the least important feature and runs the model again, continuing until it has reached some lower level of efficiancy.
+that runs a model, removes the least important feature and runs the model again, continuing until it has reached some lower level of efficiency.
 
 
 ```python
@@ -530,8 +530,8 @@ def feature_eliminator(df, target, pipe, min_prob=1, initial_drops=[]):
 ```
 
 Our function has three exit clauses:
-- if at the very start it can't reach its target it will imediatly tell us.
-- Otherwise it will run untill it has no longer hits the target and then reports the last successful feature configuration.
+- if at the very start it can't reach its target it will immediately tell us.
+- Otherwise it will run until it no longer hits the target and then reports the last successful feature configuration.
 - Finally if it can hit the target with only one feature it will report.
 
 
@@ -545,7 +545,7 @@ feature_eliminator(data, 'class', pipe, min_prob=0.95)
 
 
 
-I knew something smelled fishy! let's try again with some deodorized mushrooms:
+I knew something smelled fishy! let's try again with some deodorised mushrooms:
 
 
 ```python
@@ -575,15 +575,15 @@ That's enough of that I think! There are obviously a multitude of very strong pr
 
 ## Mushrooms for everyone!
 
-Okay, let's set out a project. We shall build a usable field guide that is fully accessable. For this we will need:
+Okay, let's set out a project. We shall build a usable field guide that is fully accessible. For this we will need:
 
 - A model that has no risk of poisoning its users; that is, 100% recall.
-- The model should not use any features that might be inaccessable; in this case that means colors and odor.
+- The model should not use any features that might be inaccessible; in this case that means colours and odor.
 - The model should be as simple as possible.
 
 Our model will be a Decision Tree; we shall try to minimise the number of end leaves. We will use a GridsearchCV ensemble to try to find the best parameters and try different random seeds.
 
-Our first step will be to build a function runs our GridSearchCV with increasing Maximum leaf values, searching for one that achieves 100% recall. It will then produce the best decision tree it found and 
+Our first step will be to build a function that runs our GridSearchCV with increasing Maximum leaf values, searching for one that achieves 100% recall. It will then produce the best decision tree it found and 
 report its accuracy.
 
 
@@ -616,11 +616,11 @@ def leaf_finder(df, target, features, params, recall_limit=1.0, min_leaf=2, max_
     raise NameError(f'The function was not able to achieve 100% recall witin {max_leaf} leaves')
 ```
 
-Eagle eyed readers may have noticed something a bit naughty about our function: We are predicting upon the entire dataset rather then just the training set. There is a reason for this; As we are looking for 100%
+Eagle eyed readers may have noticed something a bit naughty about our function: We are predicting upon the entire dataset rather than just the training set. There is a reason for this; As we are looking for 100%
 recall we are protected from overfitting - if the algorithm is achieving 100% on the whole dataset it must necessarily be achieving it on the training set as well. This method is desirable because it is
 possible for an algorithm to achieve high but not quite 100% recall on the training data and then, by fluke, get 100% on the test data. This protects us from that case.
 
-Now, lets impliment it.
+Now, let's implement it.
 
 
 ```python
@@ -639,7 +639,7 @@ best = leaf_finder(data, 'class', features, params, min_leaf=5, max_leaf=15)
     Best estimator achieved accuracy of 96.5%, using 8 leaves
     
 
-8 leaves, not bad! An overall accuracy of 96.5% is completly acceptable as well. Lets take a look at the winning tree:
+8 leaves, not bad! An overall accuracy of 96.5% is completely acceptable as well. Lets take a look at the winning tree:
 
 
 
@@ -648,9 +648,9 @@ best = leaf_finder(data, 'class', features, params, min_leaf=5, max_leaf=15)
 
     
 
-Can we make it any better? After a bit of experimentation I found two stratagies. Firstly gill_size seems to be a trap. While it is a great initial seporator the two groups it creats seem to be hard
-to brake down further. Secondly the stalk root feature is obviously a very useful one, but the arbitraty order it has been assigned seems sub-optimal (as we can see from the fact it has been split on three
-seperate times in our tree). I remaped the values to make the splitting more efficient.
+Can we make it any better? After a bit of experimentation I found two stratagies. Firstly gill_size seems to be a trap. While it is a great initial seporator the two groups it creates seem to be hard
+to break down further. Secondly the stalk root feature is obviously a very useful one, but the arbitrary order it has been assigned seems sub-optimal (as we can see from the fact it has been split on three
+separate times in our tree). I re-maped the values to make the splitting more efficient.
 
 
 ```python
@@ -676,4 +676,4 @@ best = leaf_finder(data, 'class', features, params, min_leaf=5, max_leaf=15)
 ![](/images/output_41_0.png)    
 
 
-And there we have it! Five questions that anyone can answer and we have sucessfully sorted out all of the inedible fungus. Trufflers rejoyce!
+And there we have it! Five questions that anyone can answer and we have successfully sorted out all of the inedible fungus. Trufflers rejoice!
