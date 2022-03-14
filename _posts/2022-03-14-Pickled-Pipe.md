@@ -1,10 +1,14 @@
 # Pipeline implimentation
 
+1. TOC
+{:toc}
+
 
 ## Loading the data
 
 
 ```python
+#hide
 import pandas as pd
 import numpy as np
 ```
