@@ -7,7 +7,7 @@
 ## Loading the data
 
 
-```python#hide
+```#hide
 import pandas as pd
 import numpy as np
 ```
